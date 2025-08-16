@@ -5,7 +5,6 @@ USE WAREHOUSE demo;
 -- Create the database
 CREATE DATABASE sales_stage_db;
 
-
 -- Create the sales_data_stage table
 CREATE OR REPLACE TABLE public.sales_data_stage (
   order_id INTEGER,
@@ -24,15 +23,12 @@ URL = 's3://snowflake-hands-on-data/sample_data_basic/sales_sample_data.csv'
 CREDENTIALS = ( 
   AWS_KEY_ID = 888888888888888
   AWS_SECRET_KEY = 8888888888888888
-
 )
 FILE_FORMAT = (TYPE = 'CSV' FIELD_DELIMITER = ',' SKIP_HEADER = 1 COMPRESSION = 'AUTO');
-
 
 -- Load data from the stage into Snowflake table
 COPY INTO public.sales_data_stage
 FROM @s3_stage;
-
 
 -- Query the table to verify data insertion
 SELECT * FROM public.sales_data_stage LIMIT 10;
@@ -45,7 +41,6 @@ DROP DATABASE IF EXISTS sales_stage_db;
 --    TASK 2:- Loading Data from S3 Using a Stage with Data Transformation
 -- Set the warehouse to use
 USE WAREHOUSE demo;
-
 -- Create the database
 CREATE DATABASE sales_transformation_db;
 
@@ -90,7 +85,6 @@ FROM (
   FROM @s3_stage
 );
 
-
 -- Query the table to verify data insertion and transformation
 SELECT * FROM public.sales_data_transformation LIMIT 10;
 
@@ -104,11 +98,9 @@ DROP TABLE IF EXISTS public.sales_data_transformation;
 DROP DATABASE IF EXISTS sales_transformation_db;
 
 
-
 --    TASK 3:- Load a Subset of Columns from S3 into Snowflake
 -- Use the 'demo' warehouse for running queries.
 USE WAREHOUSE demo;
-
 -- Create a new database named 'sales_db_subset'.
 CREATE OR REPLACE DATABASE sales_db_subset;
 
