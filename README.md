@@ -1,4 +1,4 @@
-# snflk_mini_proj2_stages_and_transformations
+# snowflake_proj2_stages_and_transformations
 
 TASK 1:- 
 
