@@ -1,87 +1,44 @@
 # snowflake_proj2_stages_and_transformations
+This project demonstrates the use of Snowflake stages to load data from Amazon S3 and apply basic transformations during the load process. The exercises cover:
+Loading full datasets from S3 into Snowflake
+Applying simple transformations while loading
+Loading subsets of columns
+Managing database objects efficiently
 
-TASK 1:- 
+The goal is to learn how Snowflake stages simplify data ingestion and support transformations without modifying the source files.
 
-Loading CSV Data from S3 into Snowflake Using Stages
+Prerequisites:-
+Active Snowflake account
+Access to Snowflake Web UI or SnowSQL
+AWS credentials with permission to access the specified S3 bucket
+Demo warehouse created in Project 1
 
-Use the demo warehouse for executing all SQL commands.
-Create a database named sales_stage_db.
-Create a table named sales_data_stage with the following columns:
-order_id (Integer)
-customer_id (Integer)
-customer_name (String, 100 characters)
-order_date (Date)
-product (String, 100 characters)
-quantity (Integer)
-price (Numeric)
-complete_address (String, 255 characters)
+Tasks Performed:-
+Task 1: Loading CSV Data from S3 Using Stages
+Created a database and table for sales data
+Created a named stage pointing to the S3 bucket containing the CSV file
+Loaded the full CSV data into the table using the stage
+Verified that all rows were ingested successfully
+Dropped the database and table after verification to maintain a clean environment
 
-Create a stage s3_stage and point it to the S3 bucket containing the CSV file.
+Task 2: Loading Data with Transformations
+Created a database and table for transformed sales data
+Created a named stage pointing to the S3 bucket
+Applied a transformation while loading: stored only the first 5 characters of the complete_address column
+Verified that data was loaded and transformed correctly
+Cleaned up by dropping the database, table, and stage
 
-S3 Path: s3://snowflake-hands-on-data/sample_data_basic/sales_sample_data.csv
-AWS Access Key: <8888888888888888>
-AWS Secret Key: <8888888888888888>
+Task 3: Loading a Subset of Columns from S3
+Created a database and table with a subset of columns (order_id and customer_name)
+Created a named stage pointing to the S3 bucket
+Loaded only the required columns into the table
+Verified that the subset of data was loaded correctly
+Cleaned up by dropping the database, table, and stage
 
-Load the data from the stage into the sales_data_stage table.
-Query the sales_data_stage table to verify that all data is loaded correctly.
-Drop the sales_data_stage table and sales_stage_db database once you have verified the data.
+Real-World Relevance:
+Stages simplify the ingestion of large datasets from cloud storage into Snowflake without moving files manually
+Transformations during load reduce preprocessing steps and help maintain clean, standardized data
+Selective column loading optimizes storage and query performance by ingesting only the necessary data
 
-TASK 2:-
-
-Loading Data from S3 Using a Stage with Data Transformation
-
-Use the demo warehouse for executing all SQL commands.
-Create a database named sales_transformation_db.
-Create a table named sales_data_transformation with the following columns:
-order_id (Integer)
-customer_id (Integer)
-customer_name (String, 100 characters)
-order_date (Date)
-product (String, 100 characters)
-quantity (Integer)
-price (Numeric)
-complete_address (String, 255 characters)
-
-Create a named stage s3_stage and point it to the S3 bucket containing the CSV file:
-
-S3 Path: s3://snowflake-hands-on-data/sample_data_basic/sales_sample_data.csv
-AWS Access Key: 8888888888888888
-AWS Secret Key: 8888888888888888
-
-Transformation: Load the data from the stage into the sales_data_transformation table, transforming the complete_address column to store only the first 5 characters of the address.
-Query the sales_data_transformation table to verify the data has been transformed and loaded correctly.
-Clean Up: Drop the created stage, table, and database to ensure no residual objects are left.
-
-TASK 3:-
-
-Load a Subset of Columns from S3 into Snowflake
-
-Ensure you are using the demo warehouse created in earlier assignments.
-
-Create Database and Table: Create a new database named sales_db_subset. Inside this database, create a table called orders_subset with the following structure:
-order_id INTEGER
-customer_name STRING
-Create a Named Stage:
-Create a named stage s3_stage pointing to the S3 bucket containing the CSV file.
-S3 Path: s3://snowflake-hands-on-data/sample_data_basic/sales_sample_data.csv
-AWS Access Key: 888888888888888
-AWS Secret Key: 888888888888888
-
-Load Subset of Columns into Table:
-Use the COPY INTO command to load a subset of columns (specifically order_id and customer_name) from the S3 file into the orders_subset table.
-
-COPY INTO sales_db_subset.public.orders_subset (order_id, customer_name)
-FROM (
-SELECT
-t.$1 AS order_id,
-t.$3 AS customer_name
-FROM @s3_stage t
-)
-FILE_FORMAT = (TYPE = 'CSV' FIELD_DELIMITER = ',' SKIP_HEADER = 1);
-
-
-Verify Data: Query the orders_subset table to ensure only the order_id and customer_name columns have been loaded correctly.
-
-Clean Up: Drop the stage s3_stage, database sales_db_subset, table orders_subset after verifying that everything is correctly loaded and transformed.
 
 
